@@ -1,5 +1,5 @@
-EXEC= labyresolv
-SRC= $(wildcard *.c)
+EXEC= labyrinthe
+SRC= labyrinthe.c
 OBJ= $(SRC:.c=.o)
 CFLAGS= -Wall -Werror -Wextra -ansi -pedantic -c -g -std=c99
 LDFLAGS=

@@ -14,13 +14,12 @@
 #include <string.h>
 #include <time.h>
 
-int ft_resolveur(char **labyrinthe, int x, int y);
 static int ft_convertCharInt(char *number);
-static void ft_choice_start(char **labyrinthe, int x, int y);
-static void ft_show_labyrinthe(char **labbyrinthe, int x, int y);
-static void ft_fill_border(char **labytrinthe, int x, int y);
-static void ft_create_mur(char **labyrinthe, int x, int y);
-static void ft_choice_win(char **labyrenthe, int x, int y);
+static void ft_choice_start(int x, int y, char *labyrinthe[x]);
+static void ft_show_labyrinthe(int x, int y, char *labyrinthe[x]);
+static void ft_fill_border(int x, int y, char *labyrinthe[x]);
+static void ft_create_mur(int x, int y, char *labyrinthe[x]);
+static void ft_choice_win (int x, int y, char *labyrinthe[x]);
 
 int main (int argc, char **argv)
 {
@@ -34,13 +33,12 @@ int main (int argc, char **argv)
 	for(int i = 0; i < y; i++)
 		labyrinthe[i] = malloc((x) * sizeof(char));
 
-	ft_fill_border(labyrinthe, x, y);
-	ft_choice_start(labyrinthe ,x, y);
-	ft_create_mur(labyrinthe, x, y);
-	ft_choice_win(labyrinthe, x, y);
-	ft_show_labyrinthe(labyrinthe, x, y);
+	ft_fill_border(x, y, labyrinthe);
+	ft_choice_start(x, y, labyrinthe);
+	ft_create_mur(x, y, labyrinthe);
+	ft_choice_win(x, y, labyrinthe);
+	ft_show_labyrinthe(x, y, labyrinthe);
 	printf("\n partie resolveur\n");
-	ft_resolveur(labyrinthe, x , y);
 
 	for(int i = 0; i < x; i++)
 		free(labyrinthe[i]);
@@ -49,7 +47,7 @@ int main (int argc, char **argv)
 		return EXIT_SUCCESS;
 }
 
- static void ft_choice_win(char **labyrinthe, int x, int y)
+static void ft_choice_win(int x, int y, char *labyrinthe[x])
 {
 	int random_x = rand()%x;
 	int random_y = rand()%y;
@@ -57,10 +55,10 @@ int main (int argc, char **argv)
 	if(labyrinthe[random_y][random_x] == '.')
 		labyrinthe[random_y][random_x] = '$';
 	else
-		ft_choice_win(labyrinthe, x, y);
+		ft_choice_win(x, y, labyrinthe);
 }
 
- static void ft_create_mur(char **labyrinthe, int x, int y)
+static void ft_create_mur(int x, int y, char *labyrinthe[x])
 {
 	int nbMur_max_y = y/5, nbMur_max_x = x/5;
 	int nbMur_y = 0, nbMur_x = 0;
@@ -106,7 +104,7 @@ int main (int argc, char **argv)
 	}
 }
 
- static void ft_show_labyrinthe(char **labyrinthe, int x, int y)
+static void ft_show_labyrinthe(int x, int y, char *labyrinthe[x])
 {
 	for(int h = 0; h < y; h++)
 	{
@@ -118,29 +116,25 @@ int main (int argc, char **argv)
 	}
 }
 
- static void ft_fill_border(char **labyrinthe, int x, int y)
+static void ft_fill_border(int x, int y, char *labyrinthe[x])
 {
 	for(int h = 0; h < y; h++)
 	{
-		if(labyrinthe[h][0] != '@')
 			labyrinthe[h][0] = '#';
 
-		if(labyrinthe[h][x-1] != '@')
 			labyrinthe[h][x-1] = '#';
 
 	}
 		for(int w = 0; w < x; w++)
 		{
-			if(labyrinthe[0][w] != '@')
 				labyrinthe[0][w] = '#';
 
-			if(labyrinthe[y-1][w] != '@')
 				labyrinthe[y-1][w] = '#';
 
 		}
 }
 
- static void ft_choice_start(char **labyrinthe, int x, int y)
+static void ft_choice_start(int x, int y, char *labyrinthe[x])
 {
 	int nb_aleatoire = rand()%(x+y)*2-1;
 
@@ -153,7 +147,7 @@ int main (int argc, char **argv)
 	else if(nb_aleatoire > (2*x + y) && nb_aleatoire < ((x-1)+(y-1))*2)
 		labyrinthe[nb_aleatoire-((2*x)+y)][0] = '@';
 	else
-		ft_choice_start(labyrinthe, x, y);
+		ft_choice_start(x, y, labyrinthe);
 }
 
 static int ft_convertCharInt(char *number)
